@@ -24,6 +24,7 @@ export const Route = createFileRoute("/apply")({
   component: Apply,
 });
 
+type Keys = "loanType" | "fullName" | "mobile" | "email" | "city" | "amount" | "employmentType" | "consent";
 const steps = ["Loan type", "Your details", "Loan details", "Review"];
 
 function Apply() {
@@ -34,7 +35,7 @@ function Apply() {
     fullName: "", mobile: "", email: "", city: "",
     amount: "", employmentType: "", contactTime: "", consent: false,
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Partial<Record<Keys, string>>>({});
   const [status, setStatus] = useState<"idle" | "loading" | "done">("idle");
   const set = (k: keyof typeof v) => (val: string | boolean) => setV((s) => ({ ...s, [k]: val }));
 
@@ -44,7 +45,7 @@ function Apply() {
     const schema = step === 2 ? stepThreeSchema.omit({ consent: true }) : schemas[step];
     if (schema) {
       const r = schema.safeParse(v);
-      if (!r.success) return setErrors(zodErrors(r.error.issues));
+      if (!r.success) return setErrors(zodErrors<Keys>(r.error.issues));
     }
     setErrors({});
     if (step < 3) return setStep(step + 1);
