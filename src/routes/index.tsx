@@ -94,7 +94,7 @@ function Index() {
         <Reveal><h2 className="font-display text-3xl font-semibold text-navy sm:text-4xl">Why Choose Us</h2></Reveal>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {whyChooseUs.map((w, i) => {
-            const Icon = whyIcons[i];
+            const Icon = whyIcons[i] ?? Headset;
             return (
               <Reveal key={w.title} delay={i * 0.06}>
                 <div className="card-3d h-full rounded-2xl border bg-card p-6">

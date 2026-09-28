@@ -23,7 +23,7 @@ export function QuickEnquiryForm({ source, defaultLoanType = "", withMessage, ti
     amount: "",
     message: "",
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Partial<Record<"fullName" | "mobile" | "loanType" | "amount", string>>>({});
   const [status, setStatus] = useState<"idle" | "loading" | "done">("idle");
   const set = (k: keyof typeof values) => (v: string) => setValues((s) => ({ ...s, [k]: v }));
 
@@ -31,7 +31,7 @@ export function QuickEnquiryForm({ source, defaultLoanType = "", withMessage, ti
     e.preventDefault();
     const parsed = quickEnquirySchema.safeParse(values);
     if (!parsed.success) {
-      setErrors(zodErrors(parsed.error.issues));
+      setErrors(zodErrors<"fullName" | "mobile" | "loanType" | "amount">(parsed.error.issues));
       return;
     }
     setErrors({});

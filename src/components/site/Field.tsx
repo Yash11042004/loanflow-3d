@@ -9,7 +9,7 @@ export function Field({
 }: {
   id: string;
   label: string;
-  error?: string;
+  error?: string | undefined;
   children: ReactNode;
 }) {
   return (
@@ -27,10 +27,10 @@ export function Field({
   );
 }
 
-export function zodErrors(issues: { path: (string | number)[]; message: string }[]) {
-  const out: Record<string, string> = {};
+export function zodErrors<K extends string = string>(issues: { path: (string | number)[]; message: string }[]) {
+  const out: Partial<Record<K, string>> = {};
   for (const i of issues) {
-    const k = String(i.path[0]);
+    const k = String(i.path[0]) as K;
     if (!out[k]) out[k] = i.message;
   }
   return out;
